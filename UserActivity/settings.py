@@ -25,7 +25,7 @@ SECRET_KEY = 's6sjzl=dc$osei+10=)u08_=byd2fa$4a)#6k(*l4$q#y6ak7!'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['activitytrack.herokuapp.com','www.activitytrack.herokuapp.com']
+ALLOWED_HOSTS = ['activitytrack.herokuapp.com','www.activitytrack.herokuapp.com','127.0.0.1']
 
 
 # Application definition
@@ -126,7 +126,7 @@ STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
 MEDIA_ROOT =  os.path.join(BASE_DIR, 'media')
 
-STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 STATIC_ROOT  =   os.path.join(BASE_DIR, 'staticfiles')
 
 
