@@ -1,0 +1,39 @@
+{% extends 'layouts/base.html'%}
+{%block content%}
+<div class="row">
+	<div class="col-10 col-xs-10 col-sm-6 col-md-6 col-xl-6 mx-auto mx-xs-auto col-sm-auto col-md-auto shadow p-3 mb-2 bg-white rounded">
+	    
+        <h4 id="result" class="log shadow-sm p-3 mb-2 bg-white rounded text-center">Add new user</h4>
+        
+        <form id="myform" class="form-horizontal shadow p-3 mb-2 bg-white rounded" role="form" method="POST" action='{% url "save_new_user_endpoint"%}'>
+        {%csrf_token%}
+            <div class="form-group">
+              <label for="name">Real Name</label>
+              <input placeholder="Enter Real Name" class="form-control" type="text" id="name" name="name">
+            </div>
+            <div class="form-group">
+              <label for="tz">Tz</label>
+              <input placeholder="Enter Tz" class="form-control" type="text" id="tz" name="tz">
+            </div>	
+            <input class="btn btn-primary" id="save" style="background:orange" type="submit" value="Save" />
+        </form>
+	</div>
+</div>
+        
+<script>
+$("#myform").submit(function (e) {	
+    e.preventDefault();
+	$.ajax({
+		url : $(this).attr('action'),
+		type : $(this).attr('method'),
+		data : $(this).serialize(),
+		success : function(json){
+		  alert(json.msg);
+		},
+		error : function(xhr,errmsg,err) {
+		  alert("eerr");
+		}
+	});
+});
+</script>
+{%endblock content%}

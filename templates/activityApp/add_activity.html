@@ -1,0 +1,48 @@
+{% extends 'layouts/base.html'%}
+{%block content%}
+<div class="row">
+	<div class="col-10 col-xs-10 col-sm-6 col-md-6 col-xl-6 mx-auto mx-xs-auto col-sm-auto col-md-auto shadow p-3 mb-2 bg-white rounded">
+	    
+        <h4 id="result" class="log shadow-sm p-3 mb-2 bg-white rounded text-center">Add new Activity</h4>
+        
+        <form id="myform" class="form-horizontal shadow p-3 mb-2 bg-white rounded" role="form" method="POST" action='{% url "save_activity_endpoint"%}'>
+        {%csrf_token%}
+            <div class="form-group">
+              <label for="name">Select Member</label>
+              <select name="member" id="member" class="form-control rounded-pill">
+                  {%for activity in ActivityMembers_List%}
+                  <option value="{{activity.id}}">{{activity.real_name}}</option>
+                  {%endfor%}
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="email">Enter Start Date</label>
+              <input placeholder="enter start date" class="form-control date_custom rounded-pill" type="text" id="start_date" name="start_date">
+            </div>	
+            <div class="form-group">
+              <label for="email">Enter End Date</label>
+              <input placeholder="enter end date" class="form-control date_custom rounded-pill" type="text" id="end_date" name="end_date">
+            </div>	
+            <input class="btn btn-primary " id="login" style="background:orange" type="submit" value="Save Activity" />
+        </form>
+	</div>
+</div>
+        
+<script>
+$(".date_custom").datepicker({ dateFormat: 'yy-mm-dd', changeMonth: true, changeYear: true,});
+$("#myform").submit(function (e) {	
+    e.preventDefault();
+	$.ajax({
+		url : $(this).attr('action'),
+		type : $(this).attr('method'),
+		data : $(this).serialize(),
+		success : function(json){
+            alert(json.msg);
+		},
+		error : function(xhr,errmsg,err) {
+		 console.log(xhr.responseText);
+		}
+	});
+});
+</script>
+{%endblock content%}

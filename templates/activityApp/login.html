@@ -1,0 +1,46 @@
+{% extends 'layouts/base.html'%}
+{%block content%}
+<div class="row">
+	<div class="col-10 col-xs-10 col-sm-6 col-md-6 col-xl-6 mx-auto mx-xs-auto col-sm-auto col-md-auto shadow p-3 mb-2 bg-white rounded">
+	    
+        <h4 id="result" class="log shadow-sm p-3 mb-2 bg-white rounded text-center">Check My Portal</h4>
+        
+        <form id="myform" class="form-horizontal shadow p-3 mb-2 bg-white rounded" role="form" method="POST" action='{% url "validatemylogin"%}'>
+        {%csrf_token%}
+            <div class="form-group">
+              <label for="name">Email</label>
+              <input placeholder="enter email" class="form-control" type="text" id="username" name="username">
+            </div>
+            <div class="form-group">
+              <label for="email">Password</label>
+              <input placeholder="enter password" class="form-control" type="password" id="password" name="password">
+            </div>	
+            <input class="btn btn-primary" id="login" style="background:orange" type="submit" value="Login" />
+        </form>
+	</div>
+</div>
+        
+<script>
+$("#myform").submit(function (e) {	
+    e.preventDefault();
+	$.ajax({
+		url : $(this).attr('action'),
+		type : $(this).attr('method'),
+		data : $(this).serialize(),
+		success : function(json){
+		  if (json.is_logged_in_admin) {
+		  window.location.href="{%url 'dashboard'%}"
+		  }else{
+		  alert("wrong login credentials")
+		  }
+		  if(json.error_message){
+		  
+		  }
+		},
+		error : function(xhr,errmsg,err) {
+		  $('#result').html(errmsg).removeClass("alert-info").addClass("alert-warning");
+		}
+	});
+});
+</script>
+{%endblock content%}
