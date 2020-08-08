@@ -1,15 +1,21 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect,reverse
 from django.http import JsonResponse
 from django.contrib.auth import login,authenticate,logout
 from .models import *
 from .utils import unique_slug_generator
 from django.contrib.auth.decorators import user_passes_test
+from rest_framework.decorators import api_view
+
+def Logout(request):
+		logout(request)
+		return redirect(reverse('user_login'))
 
 def user_login(request):
     template_name="activityApp/login.html"
     context={}
     return render(request,template_name,context)
 
+@api_view(['GET'])
 def get_data_endpoint(request):
 	data = {}
 	for activity_status in ActivityStatus.objects.all():

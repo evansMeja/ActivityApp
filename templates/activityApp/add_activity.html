@@ -1,7 +1,7 @@
 {% extends 'layouts/base.html'%}
 {%block content%}
 <div class="row">
-	<div class="col-10 col-xs-10 col-sm-6 col-md-6 col-xl-6 mx-auto mx-xs-auto col-sm-auto col-md-auto shadow p-3 mb-2 bg-white rounded">
+	<div class="col-12 col-xs-12 col-sm-10 col-md-6 col-xl-6 mx-auto mx-xs-auto col-sm-auto col-md-auto shadow p-3 mb-2 bg-white rounded">
 	    
         <h4 id="result" class="log shadow-sm p-3 mb-2 bg-white rounded text-center">Add new Activity</h4>
         
@@ -23,12 +23,18 @@
               <label for="email">Enter End Date</label>
               <input placeholder="enter end date" class="form-control date_custom rounded-pill" type="text" id="end_date" name="end_date">
             </div>	
-            <input class="btn btn-primary " id="login" style="background:orange" type="submit" value="Save Activity" />
+            <input class="form-control btn btn-primary rounded-pill " id="login" style="background:orange" type="submit" value="Save Activity" />
         </form>
 	</div>
 </div>
         
 <script>
+
+
+$(document).ajaxStart(function(){
+  $("#result").text("sending request....");
+});
+
 $(".date_custom").datepicker({ dateFormat: 'yy-mm-dd', changeMonth: true, changeYear: true,});
 $("#myform").submit(function (e) {	
     e.preventDefault();
@@ -37,7 +43,6 @@ $("#myform").submit(function (e) {
 		type : $(this).attr('method'),
 		data : $(this).serialize(),
 		success : function(json){
-            alert(json.msg);
             $("#result").text(json.msg);
 		},
 		error : function(xhr,errmsg,err) {
