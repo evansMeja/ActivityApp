@@ -1,14 +1,13 @@
 from django.db import models
 
 class ActivityStatus(models.Model):
-    status = models.CharField(max_length=50,default="ok")
+    status = models.BooleanField(default=True)
 
     def __str__(self):
         return str(self.status)
 
 class ActivityMembers(models.Model):
     activity_user_owner = models.ForeignKey(ActivityStatus,on_delete=models.CASCADE, default=1)
-    member_id = models.CharField(max_length=100)
     real_name = models.CharField(max_length=100,blank=True,null=True)
     tz = models.CharField(max_length=50,blank=True,null=True)
 

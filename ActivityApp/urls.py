@@ -10,4 +10,5 @@ urlpatterns = [
     path("add_activity",add_activity,name="add_activity"),
     path("save_new_user_endpoint",save_new_user_endpoint,name="save_new_user_endpoint"),
     path("save_activity_endpoint",save_activity_endpoint,name="save_activity_endpoint"),
+    path("get_data_endpoint",get_data_endpoint,name="get_data_endpoint"),
 ]

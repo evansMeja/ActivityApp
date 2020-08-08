@@ -38,6 +38,7 @@ $("#myform").submit(function (e) {
 		data : $(this).serialize(),
 		success : function(json){
             alert(json.msg);
+            $("#result").text(json.msg);
 		},
 		error : function(xhr,errmsg,err) {
 		 console.log(xhr.responseText);

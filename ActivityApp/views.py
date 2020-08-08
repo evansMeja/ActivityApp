@@ -2,11 +2,36 @@ from django.shortcuts import render
 from django.http import JsonResponse
 from django.contrib.auth import login,authenticate,logout
 from .models import *
+from .utils import unique_slug_generator
+from django.contrib.auth.decorators import user_passes_test
 
 def user_login(request):
     template_name="activityApp/login.html"
     context={}
     return render(request,template_name,context)
+
+def get_data_endpoint(request):
+	data = {}
+	for activity_status in ActivityStatus.objects.all():
+		data["ok"] = activity_status.status
+		members_list = ActivityMembers.objects.filter(activity_user_owner=activity_status)
+		l=[]
+		for member in members_list:
+			member_dict = {}
+			member_dict["id"]= member.id
+			member_dict["real_name"]= member.real_name
+			member_dict["tz"]= member.tz
+			l1=[]
+			ActivityPeriods_list = ActivityPeriods.objects.filter(activity_period_owner = member)
+			for activityperiod in ActivityPeriods_list:
+				activity_dict = {}
+				activity_dict['start_time'] = activityperiod.start_time
+				activity_dict['end_time'] = activityperiod.end_time
+				l1.append(activity_dict)
+			member_dict["activity_periods"]= l1
+			l.append(member_dict)
+		data["members"] = l
+	return JsonResponse(data)
 
 def save_activity_endpoint(request):
 	member_id=int(request.POST.get('member'))
@@ -23,10 +48,8 @@ def save_activity_endpoint(request):
 def save_new_user_endpoint(request):
 	name=request.POST.get('name')
 	tz=request.POST.get('tz')
-	member_id = "XSSDADA"
 	ActivityMembers_Obj = ActivityMembers()
 	ActivityMembers_Obj.activity_user_owner = ActivityStatus.objects.all().first()
-	ActivityMembers_Obj.member_id = member_id
 	ActivityMembers_Obj.tz = tz
 	ActivityMembers_Obj.real_name = name
 	ActivityMembers_Obj.save()
