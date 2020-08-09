@@ -1,0 +1,38 @@
+{% extends 'layouts/base.html'%}
+{%block content%}
+<div class="row">
+	<div class="col-12 col-xs-12 col-sm-10 col-md-6 col-xl-6 mx-auto mx-xs-auto col-sm-auto col-md-auto shadow p-3 mb-2 bg-white rounded">
+       <h4 id="result">Make an API Call to <i>/get_data_endpoint</i></h4>
+       <button id="mybtn"  class="form-control btn btn-primary rounded-pill " style="background:orange">Fetch JSON Data</button>
+       <div class="text-success" id="jsonData"></div>
+	</div>
+</div>
+<script>
+    $(document).ajaxStop(function(){
+      $("#jsonData").removeClass("text-danger").addClass("text-success");
+      $("#result").html("API Call to <i>/get_data_endpoint</i> completed");
+    });
+
+    $(document).ajaxStart(function(){
+      $("#jsonData").removeClass("text-success").addClass("text-danger");
+      $("#result").html("Api Call to <i>/get_data_endpoint</i> starting...");
+    });
+    
+    $("#mybtn").click(function (e) {	
+        e.preventDefault();
+        $.ajax({
+            url : "{%url 'get_data_endpoint'%}",
+            type : "get",
+            data : {},
+            success : function(json){
+                console.log(json);
+                $("#jsonData").html(JSON.stringify(json));
+
+            },
+            error : function(xhr,errmsg,err) {
+                console.log(xhr.responseText);
+            }
+        });
+    });
+    </script>        
+{%endblock content%}
